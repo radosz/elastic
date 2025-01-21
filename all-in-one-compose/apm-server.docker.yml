@@ -1,0 +1,42 @@
+setup.template.enabled: true
+#---------------------------- APM Server ----------------------------
+apm-server:
+  host: "0.0.0.0:8200"
+#-------------------------- Elasticsearch output --------------------------
+output.elasticsearch:
+  # Array of hosts to connect to.
+  hosts: ["https://es01:9200"]
+  username: "elastic"
+  password: "elastic"
+
+  # SSL settings for Elasticsearch
+  ssl:
+    verification_mode: "none"  # Disable SSL verification (useful for self-signed certs)
+    # Optional: Specify certificate authorities if needed
+    # certificate_authorities: ["/path/to/ca.crt"]
+
+#---------------------------- APM Server - Agent Configuration ----------------------------
+# Enable fetching APM Agent configurations and source maps from Kibana.
+kibana:
+  enabled: true
+  host: "http://kibana:5601"  # Kibana instance
+  username: "kibana_system"
+  password: "elastic"
+
+  # SSL settings for Kibana
+  ssl:
+    verification_mode: "none"  # Disable SSL verification (useful for self-signed certs)
+    # Optional: Specify certificate authorities if needed
+    # certificate_authorities: ["/path/to/ca.crt"]
+
+#---------------------------- Logging -------------------------------
+logging:
+  level: debug  # Capture all log levels
+  to_stdout: true  # Send logs to stdout
+  to_files: true  # Keep writing logs to files
+  files:
+    path: /usr/share/apm-server/logs  # Path to the log files inside the container
+    name: apm-server  # Filename for your logs
+    rotateeverybytes: 10485760  # Rotate log files every 10MB
+    keepfiles: 7  # Keep the latest 7 rotated log files
+

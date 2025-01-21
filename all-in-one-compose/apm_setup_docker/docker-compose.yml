@@ -1,0 +1,9 @@
+services:
+
+  setup:
+    image: alpine:latest
+    volumes:
+      - ./setup.sh:/setup.sh
+    command: sh /setup.sh
+    environment:
+      - HOST_IP=172.26.240.1
