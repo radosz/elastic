@@ -2,13 +2,13 @@
 
 <img src="Elastic_APM.PNG">
 
-## 1. Introduction
+### 1. Introduction
 
-The purpose of this repository is to build an Elastic test environment that uses **open-beans** as an example application, demonstrating how to integrate with Elastic APM. By following the steps below, you will set up and run the necessary components (Elasticsearch, Kibana, and APM Server) alongside the **open-beans** Java application.
+The purpose of this repository is to build an Elastic test environment that uses **opbeans-java** as an example application, demonstrating how to integrate with Elastic APM. By following the steps below, you will set up and run the necessary components (Elasticsearch, Kibana, and APM Server) alongside the **opbeans-java** Java application.
 
 ---
 
-## 2. Project Structure
+### 2. Project structure
 
 1. **all-in-one-compose**  
    
@@ -16,7 +16,7 @@ The purpose of this repository is to build an Elastic test environment that uses
 
 2. **monitoring**  
    
-   - Contains a `docker-compose.yml` file specifically for running the **open-beans** example application.
+   - Contains a `docker-compose.yml` file specifically for running the **opbeans-java** example application.
 
 3. **helpers**  
    
@@ -24,9 +24,9 @@ The purpose of this repository is to build an Elastic test environment that uses
 
 ---
 
-## 3. Install open-beans with Docker
+### 3. Install opbeans-java with Docker
 
-### Step 1: Clone the Repository
+#### Step 1: Clone the Repository
 
 1. Make sure you have Git installed.  
 
@@ -42,7 +42,7 @@ The purpose of this repository is to build an Elastic test environment that uses
    cd opbeans-java
    ```
 
-### Step 2: Build the Docker Image
+#### Step 2: Build the Docker Image
 
 1. Ensure Docker is running on your machine.  
 
@@ -54,7 +54,7 @@ The purpose of this repository is to build an Elastic test environment that uses
 
 ---
 
-## 4. Compose Up All-in-One Compose
+### 4. Compose Up All-in-One Compose
 
 To set up the Elasticsearch stack (Elasticsearch, Kibana, APM Server, etc.):
 
@@ -70,7 +70,7 @@ This will start Elasticsearch, Kibana, and APM Server (among other services, if 
 
 ---
 
-## 5. Set Up APM
+### 5. Setup APM
 
 Once the services are up, verify that the APM Server is reachable:
 
@@ -87,7 +87,7 @@ Once the services are up, verify that the APM Server is reachable:
    }
    ```
 
-### If `"publish_ready": false`
+#### If `"publish_ready": false`
 
 1. Navigate to the `all-in-one-compose/apm_setup_docker` directory (or equivalent directory in your repository).  
 2. Execute the `create_docker_compose.bat` file (on Windows) or the corresponding shell script (if available on other platforms).  
@@ -103,9 +103,9 @@ To configure APM through Kibana:
 
 ---
 
-## 6. Start Open-Beans
+### 6. Start **opbeans-java**
 
-After the APM and Elasticsearch stack are ready, you can start the **open-beans** example application:
+After the APM and Elasticsearch stack are ready, you can start the **opbeans-java** example application:
 
 1. Navigate to the `monitoring` folder in this repository.  
 
@@ -117,18 +117,18 @@ After the APM and Elasticsearch stack are ready, you can start the **open-beans*
    docker-compose up -d
    ```
 
-4. The **open-beans** application should now be running and sending APM data to your Elasticsearch cluster.
+4. The **opbeans-java** application should now be running and sending APM data to your Elasticsearch cluster.
 
 ---
 
-## 7. Check Results in Observability
+### 7. Check Results in Observability
 
 Finally, head back to **Kibana** at [http://localhost:5601](http://localhost:5601) and go to:
 
 - **Observability** → **APM**
 
-Here, you should see data coming from the **open-beans** Java application. You can explore transactions, service maps, errors, and other APM metrics to verify that the integration is functioning correctly.
+Here, you should see data coming from the **opbeans-java** Java application. You can explore transactions, service maps, errors, and other APM metrics to verify that the integration is functioning correctly.
 
 ---
 
-**Congratulations!** You have successfully set up the Elastic test environment alongside **open-beans** and integrated it with Elastic APM. If you encounter any issues, consult the logs in Docker or refer to the [Elastic APM Documentation](https://www.elastic.co/guide/en/apm/get-started/current/index.html) for troubleshooting steps.
+**Congratulations!** You have successfully set up the Elastic test environment alongside **open-beans** and integrated it with Elastic APM. :rocket:
