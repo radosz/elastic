@@ -212,6 +212,7 @@ services:
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
+      - ./kibana.docker.yml:/usr/share/kibana/config/kibana.yml:ro
     ports:
       - ${KIBANA_PORT}:5601
     environment:
@@ -220,7 +221,6 @@ services:
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
-      - xpack.encryptedSavedObjects.encryptionKey=Gx45tR8dLpMnBv9cJh7kYp6sDf4eZxC2qA1wE3r
     mem_limit: ${MEM_LIMIT}
     healthcheck:
       test:
