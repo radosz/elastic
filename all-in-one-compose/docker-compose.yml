@@ -7,6 +7,9 @@ services:
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
     user: "0"
+    restart: "no" # Do not restart this container after it stops
+    labels:
+        - "run-once=true"
     command: >
       bash -c '
         if [ x${ELASTIC_PASSWORD} == x ]; then
@@ -255,6 +258,7 @@ services:
 
   metricbeat:
     container_name: metricbeat
+    network_mode: "host"
     hostname: metricbeat
     depends_on:
       es01:
@@ -267,12 +271,18 @@ services:
     environment:
       - METRICBEAT_CONFIG_MODULES_PATH=/usr/share/metricbeat/modules.d
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-      - /proc:/hostfs/proc:ro
-      - /:/hostfs:ro
+      # Linux only
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      # - /proc:/hostfs/proc:ro
+      # - /:/hostfs:ro
+      #============================
+      # Window
+      - //./pipe/docker_engine:/var/run/docker.sock:ro
+      - C:/:/hostfs:ro
+      - ./metricbeat_config:/tmp/metricbeat_config
       - ./metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml
-    command: metricbeat -e -strict.perms=false
+    command: bash -c "cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d && metricbeat -e -strict.perms=false"
     user: root
     
   filebeat:

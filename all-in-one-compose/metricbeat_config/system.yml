@@ -15,8 +15,8 @@
     - core
     - diskio
     - socket
-    - service
-    - users
+    # - service lead to Exiting: 1 error: error connecting to dbus: dial unix /run/systemd/private: connect: no such file or directory
+    # - users
   process.include_top_n:
     by_cpu: 5      # include top 5 processes by CPU
     by_memory: 5   # include top 5 processes by memory
