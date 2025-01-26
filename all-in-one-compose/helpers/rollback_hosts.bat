@@ -12,9 +12,9 @@ IF NOT EXIST "%BACKUP_PATH%" (
     EXIT /B 1
 )
 
-:: Create a new backup of the current hosts file (optional, for safety)
-echo Creating a backup of the current hosts file...
-copy "%HOSTS_PATH%" "%HOSTS_PATH%.rollback" > NUL
+rem :: Create a new backup of the current hosts file (optional, for safety)
+rem echo Creating a backup of the current hosts file...
+rem copy "%HOSTS_PATH%" "%HOSTS_PATH%.rollback" > NUL
 
 :: Restore the hosts file from the backup
 echo Restoring the hosts file from the backup...
