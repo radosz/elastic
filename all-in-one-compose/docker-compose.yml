@@ -70,6 +70,8 @@ services:
       retries: 120
 
   es01:
+    container_name: es01
+    hostname: es01
     depends_on:
       setup:
         condition: service_healthy
@@ -117,6 +119,8 @@ services:
       retries: 120
 
   es02:
+    container_name: es02
+    hostname: es02
     depends_on:
       - es01
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -159,6 +163,8 @@ services:
       retries: 120
 
   es03:
+    container_name: es03
+    hostname: es03
     depends_on:
       - es02
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -201,6 +207,8 @@ services:
       retries: 120
 
   kibana:
+    container_name: kibana
+    hostname: kibana
     depends_on:
       es01:
         condition: service_healthy
@@ -233,6 +241,8 @@ services:
       retries: 120
 
   apm01:
+    container_name: apm01
+    hostname: apm01
     depends_on:
       - kibana
     image: docker.elastic.co/apm/apm-server:${STACK_VERSION}
@@ -243,40 +253,9 @@ services:
     command: sh -c "chmod 600 /usr/share/apm-server/apm-server.yml && apm-server"
     user: root
 
-  # fleet-server:
-  #   depends_on:
-  #     kibana:
-  #       condition: service_healthy
-  #     es01:
-  #       condition: service_healthy
-  #   image: docker.elastic.co/beats/elastic-agent:${STACK_VERSION}
-  #   volumes:
-  #     - certs:/certs
-  #     - fleetserverdata:/usr/share/elastic-agent
-  #     - "/var/lib/docker/containers:/var/lib/docker/containers:ro"
-  #     - "/var/run/docker.sock:/var/run/docker/docker.sock:ro"
-  #     - "/sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro"
-  #     - "/proc:/hostfs/proc:ro"
-  #     - "/:/hostfs:ro"
-  #   ports:
-  #     - ${FLEET_PORT}:8220
-  #     - ${APMSERVER_PORT}:8200
-  #   user: root
-  #   environment:
-  #     - FLEET_ENROLL=1
-  #     - FLEET_INSECURE=true
-  #     - FLEET_SERVER_ENABLE=1
-  #     - FLEET_SERVER_INSECURE_HTTP=true
-  #     - FLEET_SERVER_POLICY_ID=fleet-server-policy
-  #     - FLEET_URL=http://fleet-server:${FLEET_PORT}
-  #     - KIBANA_FLEET_SETUP=1
-  #     - KIBANA_FLEET_USERNAME=elastic
-  #     - KIBANA_FLEET_PASSWORD=${ELASTIC_PASSWORD}
-  #     - KIBANA_HOST=http://kibana:5601
-  #     - FLEET_SERVER_ELASTICSEARCH_HOST=https://es01:${ES_PORT}
-  #     - FLEET_SERVER_ELASTICSEARCH_INSECURE=true
-
   metricbeat:
+    container_name: metricbeat
+    hostname: metricbeat
     depends_on:
       es01:
         condition: service_healthy
@@ -297,6 +276,8 @@ services:
     user: root
     
   filebeat:
+    container_name: filebeat
+    hostname: filebeat
     image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -320,5 +301,3 @@ volumes:
     driver: local
   apm01:
     driver: local
-  # fleetserverdata:
-  #   driver: local
