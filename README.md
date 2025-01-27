@@ -4,7 +4,7 @@
 
 ### 1. Introduction
 
-The purpose of this repository is to build an Elastic test environment that uses **opbeans-java** as an example application, demonstrating how to integrate with Elastic APM. By following the steps below, you will set up and run the necessary components (Elasticsearch, Kibana, and APM Server) alongside the **opbeans-java** Java application.
+The purpose of this repository is to build an Elastic test environment that uses **opbeans-java** as an example application, demonstrating how to integrate with Elastic APM. By following the steps below, you will set up and run the necessary components (Elasticsearch, Kibana,  APM, Metricbeat, Filebeat Server) alongside the **opbeans-java** Java application.
 
 ---
 
@@ -66,34 +66,11 @@ To set up the Elasticsearch stack (Elasticsearch, Kibana, APM Server, etc.):
    docker-compose up -d
    ```
 
-This will start Elasticsearch, Kibana, and APM Server (among other services, if included).
+This will start Elasticsearch, Kibana, Metricbeat, Filebeat, APM Server (among other services, if included).
 
 ---
 
-### 5. Setup APM
-
-Once the services are up, verify that the APM Server is reachable:
-
-1. Open [http://localhost:8200](http://localhost:8200) in your browser.  
-
-2. The JSON response should look similar to:
-   
-   ```json
-   {
-     "build_date": "2022-03-03T14:34:24Z",
-     "build_sha": "7d34f3e579c7fadc5e70df76ed9b39332a40d0de",
-     "publish_ready": true,
-     "version": "8.1.0"
-   }
-   ```
-
-#### If `"publish_ready": false`
-
-1. Navigate to the `all-in-one-compose/apm_setup_docker` directory (or equivalent directory in your repository).  
-2. Execute the `create_docker_compose.bat` file (on Windows) or the corresponding shell script (if available on other platforms).  
-3. After running the script, confirm that `publish_ready` is now `true` by revisiting [http://localhost:8200](http://localhost:8200).
-
-### Additional Kibana Configuration
+### 5. Kibana APM Configuration
 
 To configure APM through Kibana:  
 
