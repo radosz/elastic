@@ -1,0 +1,27 @@
+{
+  "data": {
+    "name": "default",
+    "logIndices": {
+      "type": "index_name",
+      "indexName": "logs-*,filebeat-*,kibana_sample_data_logs*"
+    },
+    "logColumns": [
+      {
+        "fieldColumn": {
+          "id": "1",
+          "field": "container.name"
+        }
+      },
+      {
+        "timestampColumn": {
+          "id": "timestamp"
+        }
+      },
+      {
+        "messageColumn": {
+          "id": "message"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+url: "http://kibana:5601/api/infra/log_source_configurations/default"
+method: PATCH
+username: "elastic"
+password: "elastic"
+headers:
+  kbn-xsrf: "true"
+  Content-Type: "application/json"

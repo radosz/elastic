@@ -296,6 +296,17 @@ services:
     command: filebeat -e -strict.perms=false
     user: root
 
+  curl-service:
+    image: alpine/curl:8.11.1
+    depends_on:
+      kibana:
+        condition: service_healthy
+    working_dir: /data
+    volumes:
+      - ./json:/data/json:ro
+      - ./send_jsons.sh:/data/send_jsons.sh:ro
+    entrypoint: ["/bin/sh", "/data/send_jsons.sh"]
+
 volumes:
   certs:
     driver: local
