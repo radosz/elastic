@@ -285,17 +285,6 @@ services:
     command: bash -c "cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d && metricbeat -e -strict.perms=false"
     user: root
     
-  filebeat:
-    container_name: filebeat
-    hostname: filebeat
-    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
-    command: filebeat -e -strict.perms=false
-    user: root
-
   curl-service:
     image: alpine/curl:8.11.1
     depends_on:
@@ -306,6 +295,20 @@ services:
       - ./json:/data/json:ro
       - ./send_jsons.sh:/data/send_jsons.sh:ro
     entrypoint: ["/bin/sh", "/data/send_jsons.sh"]
+
+  filebeat:
+    container_name: filebeat
+    depends_on:
+      curl-service:
+        condition: service_completed_successfully
+    hostname: filebeat
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
+    command: filebeat -e -strict.perms=false
+    user: root
 
 volumes:
   certs:
