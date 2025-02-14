@@ -146,28 +146,10 @@ services:
       - ./apm-server.docker.yml:/usr/share/apm-server/apm-server.yml
     command: sh -c "chmod 600 /usr/share/apm-server/apm-server.yml && apm-server"
 
-  metricbeat:
-    container_name: metricbeat
-    network_mode: "host"
-    hostname: metricbeat
-    depends_on:
-      es01:
-        condition: service_healthy
-    image: docker.elastic.co/beats/metricbeat:${STACK_VERSION}
-    environment:
-      - METRICBEAT_CONFIG_MODULES_PATH=/usr/share/metricbeat/modules.d
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-      - /proc:/hostfs/proc:ro
-      - /:/hostfs:ro
-      - ./metricbeat_config:/tmp/metricbeat_config
-      - ./metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.yml
-    command: bash -c "cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d && metricbeat -e -strict.perms=false"
-    user: root
-    
   curl-service:
     image: alpine/curl:8.11.1
+    labels:
+        - "run-once=true"
     depends_on:
       kibana:
         condition: service_healthy
@@ -177,21 +159,7 @@ services:
       - ./send_jsons.sh:/data/send_jsons.sh:ro
     entrypoint: ["/bin/sh", "/data/send_jsons.sh"]
     user: root
-
-  filebeat:
-    container_name: filebeat
-    depends_on:
-      curl-service:
-        condition: service_completed_successfully
-    hostname: filebeat
-    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro
-    command: filebeat -e -strict.perms=false
-    user: root
-
+    
 volumes:
   certs:
     driver: local

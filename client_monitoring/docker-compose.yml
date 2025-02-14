@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  
+  # Monitoring system
+  metricbeat:
+    container_name: metricbeat-erp
+    hostname: metricbeat-erp
+    image: docker.elastic.co/beats/metricbeat:8.1.0
+    environment:
+      - METRICBEAT_CONFIG_MODULES_PATH=/usr/share/metricbeat/modules.d
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+      - ./metricbeat_config:/tmp/metricbeat_config
+      - ./metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.docker.yml
+    command: >
+      bash -c '
+      cp -rT /usr/share/metricbeat/modules.d /usr/share/metricbeat/modules.backup.d &&
+      cp /usr/share/metricbeat/metricbeat.yml /usr/share/metricbeat/metricbeat.yml.backup &&
+      cp /usr/share/metricbeat/metricbeat.docker.yml /usr/share/metricbeat/metricbeat.yml &&
+      cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d &&
+      metricbeat -e -strict.perms=false
+      '
+    user: root
+
+  filebeat:
+    container_name: filebeat-erp
+    hostname: filebeat-erp
+    image: docker.elastic.co/beats/filebeat:8.1.0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.docker.yml
+    command: >
+      bash -c '
+      cp /usr/share/filebeat/filebeat.yml /usr/share/filebeat/filebeat.yml.backup &&
+      cp /usr/share/filebeat/filebeat.docker.yml /usr/share/filebeat/filebeat.yml &&
+      filebeat -e -strict.perms=false
+      '
+    user: root
