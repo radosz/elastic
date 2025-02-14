@@ -122,13 +122,12 @@ services:
       - ELASTICSEARCH_HOSTS=https://es01:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
-      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
     mem_limit: ${KIBANA_MEM_LIMIT}
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "curl -s -I http://kibana:5601 | grep -q 'HTTP/1.1 302 Found'",
+          "curl -k -s -I https://kibana:5601  | grep -q 'HTTP/1.1 302 Found'",
         ]
       interval: 10s
       timeout: 10s
@@ -142,9 +141,11 @@ services:
     image: docker.elastic.co/apm/apm-server:${STACK_VERSION}
     ports:
       - 8200:8200
-    volumes: 
+    volumes:
+      - certs:/usr/share/apm-server//config/certs 
       - ./apm-server.docker.yml:/usr/share/apm-server/apm-server.yml
-    command: sh -c "chmod 600 /usr/share/apm-server/apm-server.yml && apm-server"
+    command: sh -c "chmod go-w /usr/share/apm-server/apm-server.yml && apm-server"
+    user: root
 
   curl-service:
     image: alpine/curl:8.11.1
@@ -155,10 +156,9 @@ services:
         condition: service_healthy
     working_dir: /data
     volumes:
-      - ./json:/data/json:ro
-      - ./send_jsons.sh:/data/send_jsons.sh:ro
+      - ./json:/data/json
+      - ./send_jsons.sh:/data/send_jsons.sh
     entrypoint: ["/bin/sh", "/data/send_jsons.sh"]
-    user: root
     
 volumes:
   certs:

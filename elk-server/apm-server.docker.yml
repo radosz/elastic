@@ -5,7 +5,7 @@ apm-server:
 #-------------------------- Elasticsearch output --------------------------
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["https://192.168.100.144:9200"]
+  hosts: ["https://es01:9200"]
   username: "elastic"
   password: "elastic"
 
@@ -19,15 +19,28 @@ output.elasticsearch:
 # Enable fetching APM Agent configurations and source maps from Kibana.
 kibana:
   enabled: true
-  host: "http://kibana:5601"  # Kibana instance
+  host: "https://kibana:5601"  # Kibana instance
   username: "kibana_system"
   password: "elastic"
 
   # SSL settings for Kibana
   ssl:
-    verification_mode: "none"  # Disable SSL verification (useful for self-signed certs)
-    # Optional: Specify certificate authorities if needed
-    # certificate_authorities: ["/path/to/ca.crt"]
+    enabled: true
+    # Only allow TLS 1.3
+    supportedProtocols: ["TLSv1.3"]
+    # Certificate paths
+    certificate: "/usr/share/apm-server//config/certs/es01/es01.crt"
+    key: "/usr/share/apm-server//config/certs/es01/es01.key"
+    certificateAuthorities: ["/usr/share/apm-server//config/certs/ca/ca.crt"]
+    # Require client certificate authentication
+    clientAuthentication: "optional"
+    # Use modern cipher suites
+    cipherSuites: [
+      "TLS_AES_256_GCM_SHA384",
+      "TLS_CHACHA20_POLY1305_SHA256",
+      "TLS_AES_128_GCM_SHA256"
+    ]
+    verification_mode: "none"
 
 #---------------------------- Logging -------------------------------
 logging:

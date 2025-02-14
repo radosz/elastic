@@ -1,0 +1,107 @@
+# Kibana Configuration Environment Variables - extracted from https://www.elastic.co/guide/en/kibana/8.1/settings.html
+
+# Kibana server settings
+server:
+  port: 5601
+  host: "localhost"
+  name: "your-hostname"
+  basePath: ""
+  maxPayload: 1048576
+  socketTimeout: "120000"
+  keepaliveTimeout: "120000"
+  shutdownTimeout: "30s"
+  compression:
+    enabled: true
+  cors:
+    enabled: false
+    allowCredentials: false
+    allowOrigin: ["*"]
+  ssl:
+    enabled: false
+    supportedProtocols: ["TLSv1.1", "TLSv1.2", "TLSv1.3"]
+    
+# Elasticsearch connection settings
+elasticsearch:
+  hosts: ["http://localhost:9200"]
+  requestTimeout: 30000
+  shardTimeout: 30000
+  compression: false
+  username: ""
+  password: ""
+  ssl:
+    verificationMode: "full"
+
+# Security settings
+xpack.security:
+  encryptionKey: ""
+  session:
+    idleTimeout: "8h"
+    lifespan: "30d"
+  secureCookies: false
+  sameSiteCookies: ""
+
+# Saved objects settings
+savedObjects:
+  maxImportExportSize: 10000
+  maxImportPayloadBytes: 26214400
+
+# Logging settings
+logging:
+  root:
+    level: "info"
+
+# Path settings
+path:
+  data: "data"
+
+# Map settings
+map:
+  includeElasticMapsService: true
+  tilemap:
+    options:
+      maxZoom: 10
+      minZoom: 1
+      attribution: "© [Elastic Maps Service](https://www.elastic.co/elastic-maps-service)"
+
+# Migration settings
+migrations:
+  batchSize: 1000
+  maxBatchSizeBytes: "100mb"
+  retryAttempts: 15
+
+# Telemetry settings
+telemetry:
+  enabled: true
+  optIn: true
+  allowChangingOptInStatus: true
+
+# UI settings
+i18n:
+  locale: "en"
+
+# Feature flags
+xpack:
+  ccr.ui.enabled: true
+  ilm.ui.enabled: true
+  index_management.ui.enabled: true
+  license_management.ui.enabled: true
+  remote_clusters.ui.enabled: true
+  rollup.ui.enabled: true
+  snapshot_restore.ui.enabled: true
+  upgrade_assistant.ui.enabled: true
+
+# Content Security Policy
+csp:
+  strict: true
+  warnLegacyBrowsers: true
+  script_src: []
+  style_src: []
+  
+# Operations monitoring
+ops:
+  interval: 5000
+
+# Console settings
+console:
+  ui:
+    enabled: true
