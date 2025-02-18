@@ -1,10 +1,47 @@
-server.name: kibana
-server.publicBaseUrl: http://kibana
-server.host: "0.0.0.0"
-server.port: 5601
-elasticsearch.hosts: ["https://es01:9200"]
-elasticsearch.username: "kibana_system"
-elasticsearch.password: "kibana"
-elasticsearch.ssl.verificationMode: "none"
-elasticsearch.requestTimeout: 300000
-xpack.encryptedSavedObjects.encryptionKey: "Gx45tR8dLpMnBv9cJh7kYp6sDf4eZxC2qA1wE3r"
+server:
+  name: kibana
+  publicBaseUrl: https://kibana
+  host: 0.0.0.0
+  port: '5601'
+  ssl:
+    enabled: true
+    supportedProtocols: ["TLSv1.3"]
+    # Certificate paths as mounted in the container.
+    certificate: "/usr/share/kibana/config/certs/es01/es01.crt"
+    key: "/usr/share/kibana/config/certs/es01/es01.key"
+    certificateAuthorities: ["/usr/share/kibana/config/certs/ca/ca.crt"]
+    clientAuthentication: "optional"
+    cipherSuites:
+      - "TLS_AES_256_GCM_SHA384"
+      - "TLS_CHACHA20_POLY1305_SHA256"
+      - "TLS_AES_128_GCM_SHA256"
+
+# Security settings
+xpack.security:
+  encryptionKey: "Gx45tR8dLpMnBv9cJh7kYp6sDf4eZxC2qA1wE3r"  # At least 32 characters
+  session:
+    idleTimeout: "1h"
+    lifespan: "24h"
+  secureCookies: true
+
+xpack.encryptedSavedObjects:
+  encryptionKey: "Gx45tR8dLpMnBv9cJh7kYp6sDf4eZxC2qA1wE3r"
+
+server.securityResponseHeaders:
+  strictTransportSecurity: "max-age=31536000; includeSubDomains"
+  xContentTypeOptions: "nosniff"
+  referrerPolicy: "strict-origin-when-cross-origin"
+  permissionsPolicy: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+
+# Elasticsearch connection settings
+elasticsearch:
+  hosts: ["https://es01:9200"]
+  requestTimeout: 30000
+  shardTimeout: 30000
+  compression: false
+  username: "elastic"
+  password: "elastic"
+  # SSL settings for Elasticsearch: Use certificate mode so that the CA is used to verify the chain.
+  ssl:
+    verificationMode: "certificate"
+    certificateAuthorities: ["/usr/share/kibana/config/certs/ca/ca.crt"]

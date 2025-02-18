@@ -142,13 +142,24 @@ services:
     ports:
       - 8200:8200
     volumes:
-      - certs:/usr/share/apm-server//config/certs 
+      - certs:/usr/share/apm-server/config/certs 
       - ./apm-server.docker.yml:/usr/share/apm-server/apm-server.yml
-    command: sh -c "chmod go-w /usr/share/apm-server/apm-server.yml && apm-server"
+    entrypoint: |
+      sh -c '
+      chmod go-w /usr/share/apm-server/apm-server.yml
+      apm-server -e &
+      while true; do
+        if [ -d /usr/share/apm-server/logs ]; then
+          tail -F /usr/share/apm-server/logs/apm-server-*.ndjson 2>/dev/null || true
+        fi
+        sleep 1
+      done
+      '
     user: root
 
   curl-service:
     image: alpine/curl:8.11.1
+    container_name: curl-service
     labels:
         - "run-once=true"
     depends_on:

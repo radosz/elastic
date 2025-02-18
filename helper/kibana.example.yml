@@ -22,7 +22,7 @@ server:
     
 # Elasticsearch connection settings
 elasticsearch:
-  hosts: ["http://localhost:9200"]
+  hosts: ["https://localhost:9200"]
   requestTimeout: 30000
   shardTimeout: 30000
   compression: false

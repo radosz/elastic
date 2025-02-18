@@ -21,7 +21,7 @@ metricbeat.modules:
 
 output.elasticsearch:
   # Array of hosts to connect to.
-  hosts: ["https://192.168.100.144:9200"]
+  hosts: ["https://192.168.1.104:9200"]
 
   # Protocol - either `http` (default) or `https`.
   protocol: "https"
@@ -51,4 +51,4 @@ processors:
 # Starting with Beats version 6.0.0, the dashboards are loaded via the Kibana API.
 # This requires a Kibana endpoint configuration.
 setup.kibana:
-  host: "192.168.100.144:5601"
+  host: "192.168.1.104:5601"

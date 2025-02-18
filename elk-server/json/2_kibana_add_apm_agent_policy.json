@@ -1,0 +1,10 @@
+{
+	"name": "APM Policy",
+	"id": "1b3363c0-ee03-11ef-8d4e-bd37aa2a1b7f",
+	"description": "",
+	"namespace": "default",
+	"monitoring_enabled": [
+		"logs",
+		"metrics"
+	]
+}

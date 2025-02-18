@@ -13,7 +13,7 @@ processors:
     host: "unix:///var/run/docker.sock"
 
 output.elasticsearch:
-  hosts: ["https://192.168.100.144:9200"]
+  hosts: ["https://192.168.1.104:9200"]
   pipeline: "set-error-flag"
   username: "elastic"
   password: "elastic"

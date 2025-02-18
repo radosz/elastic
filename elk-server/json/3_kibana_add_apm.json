@@ -1,0 +1,181 @@
+{
+	"name": "apm-1",
+	"description": "",
+	"namespace": "default",
+	"policy_id": "1b3363c0-ee03-11ef-8d4e-bd37aa2a1b7f",
+	"enabled": true,
+	"output_id": "",
+	"inputs": [
+		{
+			"type": "apm",
+			"policy_template": "apmserver",
+			"enabled": true,
+			"streams": [],
+			"vars": {
+				"host": {
+					"value": "apm01:8200",
+					"type": "text"
+				},
+				"url": {
+					"value": "https://apm01:8200",
+					"type": "text"
+				},
+				"secret_token": {
+					"type": "text"
+				},
+				"api_key_enabled": {
+					"value": false,
+					"type": "bool"
+				},
+				"enable_rum": {
+					"value": true,
+					"type": "bool"
+				},
+				"anonymous_enabled": {
+					"value": true,
+					"type": "bool"
+				},
+				"anonymous_allow_agent": {
+					"value": [
+						"rum-js",
+						"js-base",
+						"iOS/swift"
+					],
+					"type": "text"
+				},
+				"anonymous_allow_service": {
+					"value": [],
+					"type": "text"
+				},
+				"anonymous_rate_limit_event_limit": {
+					"value": 300,
+					"type": "integer"
+				},
+				"anonymous_rate_limit_ip_limit": {
+					"value": 1000,
+					"type": "integer"
+				},
+				"default_service_environment": {
+					"type": "text"
+				},
+				"rum_allow_origins": {
+					"value": [
+						"\"*\""
+					],
+					"type": "text"
+				},
+				"rum_allow_headers": {
+					"value": [],
+					"type": "text"
+				},
+				"rum_response_headers": {
+					"type": "yaml"
+				},
+				"rum_library_pattern": {
+					"value": "\"node_modules|bower_components|~\"",
+					"type": "text"
+				},
+				"rum_exclude_from_grouping": {
+					"value": "\"^/webpack\"",
+					"type": "text"
+				},
+				"api_key_limit": {
+					"value": 100,
+					"type": "integer"
+				},
+				"max_event_bytes": {
+					"value": 307200,
+					"type": "integer"
+				},
+				"capture_personal_data": {
+					"value": true,
+					"type": "bool"
+				},
+				"max_header_bytes": {
+					"value": 1048576,
+					"type": "integer"
+				},
+				"idle_timeout": {
+					"value": "45s",
+					"type": "text"
+				},
+				"read_timeout": {
+					"value": "3600s",
+					"type": "text"
+				},
+				"shutdown_timeout": {
+					"value": "30s",
+					"type": "text"
+				},
+				"write_timeout": {
+					"value": "30s",
+					"type": "text"
+				},
+				"max_connections": {
+					"value": 0,
+					"type": "integer"
+				},
+				"response_headers": {
+					"type": "yaml"
+				},
+				"expvar_enabled": {
+					"value": false,
+					"type": "bool"
+				},
+				"java_attacher_discovery_rules": {
+					"type": "yaml"
+				},
+				"java_attacher_agent_version": {
+					"type": "text"
+				},
+				"java_attacher_enabled": {
+					"value": false,
+					"type": "bool"
+				},
+				"tls_enabled": {
+					"value": true,
+					"type": "bool"
+				},
+				"tls_certificate": {
+					"value": "/usr/share/apm-server/config/certs/es01/es01.crt",
+					"type": "text"
+				},
+				"tls_key": {
+					"value": "/usr/share/apm-server/config/certs/es01/es01.key",
+					"type": "text"
+				},
+				"tls_supported_protocols": {
+					"value": [
+						"TLSv1.3"
+					],
+					"type": "text"
+				},
+				"tls_cipher_suites": {
+					"value": [],
+					"type": "text"
+				},
+				"tls_curve_types": {
+					"value": [],
+					"type": "text"
+				},
+				"tail_sampling_policies": {
+					"value": "- sample_rate: 0.1\n",
+					"type": "yaml"
+				},
+				"tail_sampling_interval": {
+					"value": "1m",
+					"type": "text"
+				},
+				"tail_sampling_enabled": {
+					"value": false,
+					"type": "bool"
+				}
+			}
+		}
+	],
+	"package": {
+		"name": "apm",
+		"title": "Elastic APM",
+		"version": "8.1.0"
+	}
+}
