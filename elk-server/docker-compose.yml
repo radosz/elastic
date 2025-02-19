@@ -167,6 +167,8 @@ services:
         condition: service_healthy
     working_dir: /data
     volumes:
+      - ../template.sh:/data/template.sh
+      - ./.env:/data/.env
       - ./json:/data/json
       - ./send_jsons.sh:/data/send_jsons.sh
     entrypoint: ["/bin/sh", "/data/send_jsons.sh"]

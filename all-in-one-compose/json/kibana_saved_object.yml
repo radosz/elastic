@@ -1,6 +1,0 @@
-url: "http://kibana:5601/api/saved_objects/_import?overwrite=true"
-method: POST
-username: "elastic"
-password: "elastic"
-headers:
-  kbn-xsrf: "true"

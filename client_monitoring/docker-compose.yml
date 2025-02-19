@@ -15,13 +15,22 @@ services:
       - /proc:/hostfs/proc:ro
       - /:/hostfs:ro
       - ./metricbeat_config:/tmp/metricbeat_config
+      - ../template.sh:/tmp/template.sh
+      - ../m_template.sh:/tmp/m_template.sh
+      - ./.env:/tmp/.env
       - ./metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.docker.yml
     command: >
       bash -c '
+      chmod +x /tmp/template.sh &&
+      chmod +x /tmp/m_template.sh &&
+      cp /tmp/template.sh /bin/template.sh &&
+      cp /tmp/m_template.sh /bin/m_template.sh &&
       cp -rT /usr/share/metricbeat/modules.d /usr/share/metricbeat/modules.backup.d &&
       cp /usr/share/metricbeat/metricbeat.yml /usr/share/metricbeat/metricbeat.yml.backup &&
       cp /usr/share/metricbeat/metricbeat.docker.yml /usr/share/metricbeat/metricbeat.yml &&
       cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d &&
+      cp /tmp/.env /usr/share/metricbeat/modules.d/.env &&
+      m_template.sh /usr/share/metricbeat/modules.d &&
       metricbeat -e -strict.perms=false
       '
     user: root

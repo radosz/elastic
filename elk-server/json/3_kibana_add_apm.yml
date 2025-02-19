@@ -1,6 +1,6 @@
 url: "https://kibana:5601/api/fleet/package_policies"
 method: POST
-username: "elastic"
-password: "elastic"
+username: ${ELASTIC_USER}
+password: ${ELASTIC_PASSWORD}
 headers:
   kbn-xsrf: "true"

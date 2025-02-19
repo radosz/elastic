@@ -5,8 +5,8 @@
   metricsets:
    - status
   period: 10s
-  hosts: ["192.168.1.104:5601"]
-  basepath: ""
-  username: "elastic"
-  password: "elastic"
+  hosts: [${KIBANA_EXT_URL_1}]
+  username: ${KIBANA_USER}
+  password: ${KIBANA_PASSWORD}
+  ssl.verification_mode: ${KIBANA_SSL_VERIFICATION_MODE}
   enabled: true

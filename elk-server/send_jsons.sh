@@ -2,7 +2,16 @@
 # This script now supports dynamic HTTP requests for both JSON and NDJSON files.
 # Additionally, it handles .sh files by making them executable and executing them.
 
-CONFIG_DIR="/data/json"
+cp ./template.sh  /bin/template.sh 
+
+# Copy volume share dir to work dir
+rm -r /data/json/work
+mkdir -p /data/json/work/
+cp -r /data/json/* /data/json/work/ 
+
+CONFIG_DIR="/data/json/work"
+ENV_FILE="./.env"
+
 
 # Loop over all YAML configuration files in the folder
 for config in "$CONFIG_DIR"/*.yml; do
@@ -11,6 +20,7 @@ for config in "$CONFIG_DIR"/*.yml; do
     jsonfile="$CONFIG_DIR/${base}.json"
     ndjsonfile="$CONFIG_DIR/${base}.ndjson"
     shfile="$CONFIG_DIR/${base}.sh"
+    template.sh "$config" "$ENV_FILE"
 
     # Check which file exists: JSON, NDJSON, or SH
     if [ -f "$ndjsonfile" ]; then
@@ -79,3 +89,6 @@ for config in "$CONFIG_DIR"/*.yml; do
 
     echo "\n-------------------------\n"
 done
+
+# delete work dir
+rm -r /data/json/work
