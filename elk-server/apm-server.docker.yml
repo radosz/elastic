@@ -21,8 +21,8 @@ apm-server:
 output.elasticsearch:
   # Array of hosts to connect to.
   hosts: ["https://es01:9200"]
-  username: "elastic"
-  password: "elastic"
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD}
 
   # SSL settings for Elasticsearch: Use certificate mode so that the CA is used to verify the chain.
   ssl:

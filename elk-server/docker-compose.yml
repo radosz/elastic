@@ -113,16 +113,23 @@ services:
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
-      - ./kibana.docker.yml:/usr/share/kibana/config/kibana.yml:ro
+      - ./kibana.docker.yml:/usr/share/kibana/config/kibana.docker.yml
+      - ../.env:/usr/share/kibana/config/.env
+      - ../template.sh:/usr/share/kibana/config/template.sh
     ports:
       - ${KIBANA_PORT}:5601
     environment:
       - SERVERNAME=kibana
       - NODE_OPTIONS=--max-old-space-size=${KIBANA_MEM_LIMIT}
-      - ELASTICSEARCH_HOSTS=https://es01:9200
-      - ELASTICSEARCH_USERNAME=kibana_system
-      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
     mem_limit: ${KIBANA_MEM_LIMIT}
+    working_dir: /usr/share/kibana/config
+    command: >
+      bash -c '
+          cp /usr/share/kibana/config/kibana.docker.yml /usr/share/kibana/config/kibana.yml &&
+          ./template.sh kibana.yml .env &&
+          ls -lah &&
+          kibana --allow-root
+      '
     healthcheck:
       test:
         [
@@ -132,6 +139,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 120
+    user: root
 
   apm01:
     container_name: apm01
@@ -143,9 +151,13 @@ services:
       - 8200:8200
     volumes:
       - certs:/usr/share/apm-server/config/certs 
-      - ./apm-server.docker.yml:/usr/share/apm-server/apm-server.yml
+      - ./apm-server.docker.yml:/usr/share/apm-server/apm-server.docker.yml
+      - ../.env:/usr/share/apm-server/.env
+      - ../template.sh:/usr/share/apm-server/template.sh
     entrypoint: |
       sh -c '
+      cp /usr/share/apm-server/apm-server.docker.yml /usr/share/apm-server/apm-server.yml &&
+      ./template.sh apm-server.yml .env &&
       chmod go-w /usr/share/apm-server/apm-server.yml
       apm-server -e &
       while true; do
@@ -168,7 +180,7 @@ services:
     working_dir: /data
     volumes:
       - ../template.sh:/data/template.sh
-      - ./.env:/data/.env
+      - ../.env:/data/.env
       - ./json:/data/json
       - ./send_jsons.sh:/data/send_jsons.sh
     entrypoint: ["/bin/sh", "/data/send_jsons.sh"]

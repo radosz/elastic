@@ -17,7 +17,7 @@ services:
       - ./metricbeat_config:/tmp/metricbeat_config
       - ../template.sh:/tmp/template.sh
       - ../m_template.sh:/tmp/m_template.sh
-      - ./.env:/tmp/.env
+      - ../.env:/tmp/.env
       - ./metricbeat.docker.yml:/usr/share/metricbeat/metricbeat.docker.yml
     command: >
       bash -c '
@@ -31,6 +31,8 @@ services:
       cp -r /tmp/metricbeat_config/* /usr/share/metricbeat/modules.d &&
       cp /tmp/.env /usr/share/metricbeat/modules.d/.env &&
       m_template.sh /usr/share/metricbeat/modules.d &&
+      cp /tmp/.env /usr/share/metricbeat/.env &&
+      template.sh /usr/share/metricbeat/metricbeat.yml .env &&
       metricbeat -e -strict.perms=false
       '
     user: root
@@ -43,10 +45,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./filebeat.docker.yml:/usr/share/filebeat/filebeat.docker.yml
+      - ../template.sh:/usr/share/filebeat/template.sh
+      - ../.env:/usr/share/filebeat/.env
     command: >
       bash -c '
       cp /usr/share/filebeat/filebeat.yml /usr/share/filebeat/filebeat.yml.backup &&
       cp /usr/share/filebeat/filebeat.docker.yml /usr/share/filebeat/filebeat.yml &&
+      ./template.sh /usr/share/filebeat/filebeat.yml .env &&
       filebeat -e -strict.perms=false
       '
     user: root

@@ -13,8 +13,9 @@ processors:
     host: "unix:///var/run/docker.sock"
 
 output.elasticsearch:
-  hosts: ["https://192.168.1.104:9200"]
+  hosts: [${ELASTIC_EXT_URL_1}]
   pipeline: "set-error-flag"
-  username: "elastic"
-  password: "elastic"
-  ssl.verification_mode: "none"
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD}
+  ssl.verification_mode: ${KIBANA_SSL_VERIFICATION_MODE}
+  

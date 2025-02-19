@@ -45,8 +45,8 @@ elasticsearch:
   requestTimeout: 30000
   shardTimeout: 30000
   compression: false
-  username: "elastic"
-  password: "elastic"
+  username: ${KIBANA_USER}
+  password: ${KIBANA_PASSWORD}
   # SSL settings for Elasticsearch: Use certificate mode so that the CA is used to verify the chain.
   ssl:
     verificationMode: "certificate"
